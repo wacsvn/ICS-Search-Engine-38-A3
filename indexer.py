@@ -44,7 +44,7 @@ class JSONZipReader:
         return jsonList
 
 
-reader = JSONZipReader("test.zip")  # changed zip to be the name of the file downloaded from canvas
+reader = JSONZipReader("developer.zip")  # should we be reading from zip or unzipped files/
 jsonList = reader.getJSONData()
 
 """
@@ -62,7 +62,7 @@ texts = [json_data['content'] for json_data in jsonList]
 # begin tf-df calculations
 tfidf = TfidfVectorizer()
 tfidfList = tfidf.fit_transform(texts)
-print(f"td-idf type:  {type(tfidfList)}") # debug
+
 
 # iterate tfidList matrix to ultimately store in inv_index
 for row, col, value in zip(tfidfList.nonzero()[0], tfidfList.nonzero()[1], tfidfList.data):
@@ -79,7 +79,7 @@ for row, col, value in zip(tfidfList.nonzero()[0], tfidfList.nonzero()[1], tfidf
     # append a tuple of (document id, tf-idf score) to the "posting list"
     inv_index[term].append((doc_id, tf_idf))
 
-print(inv_index)
+
 
 
 class DataStorage:
@@ -137,8 +137,8 @@ for file in jsonList:
 dataStorage.indexSize()
 dataStorage.printIndexedFileCount()
 dataStorage.uniqueWordCount()
-
-
+# print(f"td-idf type:  {type(tfidfList)}") # debug
+# print(inv_index)  # commenting out to keep things readable lol
 
 
 
