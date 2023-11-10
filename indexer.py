@@ -44,7 +44,7 @@ class JSONZipReader:
         return jsonList
 
 
-reader = JSONZipReader("developer.zip")  # changed zip to be the name of the file downloaded from canvas
+reader = JSONZipReader("test.zip")  # changed zip to be the name of the file downloaded from canvas
 jsonList = reader.getJSONData()
 
 """
