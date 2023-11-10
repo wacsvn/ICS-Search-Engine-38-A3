@@ -1,4 +1,4 @@
-import zipfile
+import os
 import json
 import re
 import sys
@@ -14,37 +14,33 @@ Citations: (https://realpython.com/python-zipfile/) -> encoding + reading from z
 # inverted index to store key as token and value as posting (doc found in and tf-idf)
 inv_index = defaultdict(dict)
 
-class JSONZipReader:
+class JSONFolderReader:
 
-    def __init__(self, zip_file):
-        self.zip_file = zip_file
+    def __init__(self, folder_path):
+        self.folder_path = folder_path
 
     def getJSONData(self):
         jsonList = []
-        # open zip
-        with zipfile.ZipFile(self.zip_file, 'r') as zip_file:
-            # each folder is a subdomain containing webpages
-            subdirectories = zip_file.namelist()
-
-            # extract JSONs from each subdomain folder
-            for file in subdirectories:
-                subdirectoryInfo = zip_file.getinfo(file)
-                if not subdirectoryInfo.is_dir():
-                    try:
-                        subdirectoryContent = zip_file.read(file).decode(encoding="utf-8")
+        for root, dirs, files in os.walk(self.folder_path):
+            for fileName in files:
+                filePath = os.path.join(root, fileName)
+                try:
+                    filePath = os.path.join(root, fileName)
+                    with open(filePath, 'r', encoding="utf-8") as file:
+                        fileContent = file.read()
 
                         # load each page into json_data for processing
-                        json_data = json.loads(subdirectoryContent)
+                        json_data = json.loads(fileContent)
                         jsonList.append(json_data)
                         # call process method here to scrape and get info and whatnot
-                            # process_json(json_data)
-                    except json.decoder.JSONDecodeError as e:
-                        print(f"Error in JSON: {file}: {e}")
+                        # process_json(json_data)
+                except json.decoder.JSONDecodeError as e:
+                    print(f"Error in JSON: {file}: {e}")
 
         return jsonList
 
 
-reader = JSONZipReader("developer.zip")  # should we be reading from zip or unzipped files/
+reader = JSONFolderReader("DEV")  # should we be reading from zip or unzipped files/
 jsonList = reader.getJSONData()
 
 """
@@ -54,7 +50,7 @@ jsonList = reader.getJSONData()
                                             (token, [(document it was found in), (tf_idf)]) 
         - citation: #2
 """
-
+"""
 # create a list of texts for vectorization later
 texts = [json_data['content'] for json_data in jsonList]
 
@@ -78,7 +74,7 @@ for row, col, value in zip(tfidfList.nonzero()[0], tfidfList.nonzero()[1], tfidf
         inv_index[term] = []
     # append a tuple of (document id, tf-idf score) to the "posting list"
     inv_index[term].append((doc_id, tf_idf))
-
+"""
 
 
 
