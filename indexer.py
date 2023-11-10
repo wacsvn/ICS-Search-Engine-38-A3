@@ -50,20 +50,20 @@ jsonList = reader.getJSONData()
                                             (token, [(document it was found in), (tf_idf)]) 
         - citation: #2
 """
-"""
+
 # create a list of texts for vectorization later
 texts = [json_data['content'] for json_data in jsonList]
 
 # print("beginning td-idf") # debug
 # begin tf-df calculations
-tfidf = TfidfVectorizer()
+tfidf = TfidfVectorizer(stop_words=None)
 tfidfList = tfidf.fit_transform(texts)
 
 
 # iterate tfidList matrix to ultimately store in inv_index
 for row, col, value in zip(tfidfList.nonzero()[0], tfidfList.nonzero()[1], tfidfList.data):
     # get the document id, term id, and tf-idf score
-    doc_id = row
+    doc_id = jsonList[row]['content']
     term_id = col
     tf_idf = value
     # get the term corresponding to the term id
@@ -74,7 +74,7 @@ for row, col, value in zip(tfidfList.nonzero()[0], tfidfList.nonzero()[1], tfidf
         inv_index[term] = []
     # append a tuple of (document id, tf-idf score) to the "posting list"
     inv_index[term].append((doc_id, tf_idf))
-"""
+
 
 
 
