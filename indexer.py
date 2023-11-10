@@ -50,7 +50,7 @@ jsonList = reader.getJSONData()
                                             (token, [(document it was found in), (tf_idf)]) 
         - citation: #2
 """
-
+"""
 # create a list of texts for vectorization later
 texts = [json_data['content'] for json_data in jsonList]
 
@@ -75,7 +75,7 @@ for row, col, value in zip(tfidfList.nonzero()[0], tfidfList.nonzero()[1], tfidf
     # append a tuple of (document id, tf-idf score) to the "posting list"
     inv_index[term].append((doc_id, tf_idf))
 
-
+"""
 
 
 class DataStorage:
@@ -97,7 +97,7 @@ class DataStorage:
 
     def uniqueWordCount(self):
         uniqueWords = set(self.invertedIndex.keys())  # using set collection for uniqueness
-        print(f"Number of unique words in the zip file: {len(uniqueWords)}")
+        print(f"Number of unique words: {len(uniqueWords)}")
 
     def indexSize(self):
         size = sys.getsizeof(self.invertedIndex)  # getsizeof returns the size of the object in bytes
