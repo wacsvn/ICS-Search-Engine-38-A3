@@ -44,6 +44,9 @@ class JSONZipReader:
         return jsonList
 
 
+reader = JSONZipReader("developer.zip")  # changed zip to be the name of the file downloaded from canvas
+jsonList = reader.getJSONData()
+
 """
     TF-IDF CALCULATION:
         - uses jsonList to fit against vectorized TfIdf's
@@ -120,8 +123,7 @@ class Tokenizer:
         return re.findall(r'[a-zA-Z0-9]+', text.lower())
 
 
-reader = JSONZipReader("developer.zip")  # changed zip to be the name of the file downloaded from canvas
-jsonList = reader.getJSONData()
+
 
 index = 0
 dataStorage = DataStorage()  # make a dataStorage object from the class to store tokens
