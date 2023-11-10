@@ -45,6 +45,7 @@ for file in jsonList:
     print("Processed File #", index)
     index += 1
 
+tokenizeObj.indexSize()
 
 
 

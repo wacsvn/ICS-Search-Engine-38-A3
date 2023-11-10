@@ -1,6 +1,7 @@
 import re
 from bs4 import BeautifulSoup
 from collections import defaultdict
+import sys
 
 
 class DataStorage:
@@ -18,6 +19,10 @@ class DataStorage:
 
         self.totalWords[url] = len(tokens)
 
+    def indexSize(self):
+        size = sys.getsizeof(self.invertedIndex) # getsizeof returns the size of the object in bytes
+        size = size / 1024 # turning the size into KB
+        print(size) 
 
     def printData(self):
         print(self.totalWords)
