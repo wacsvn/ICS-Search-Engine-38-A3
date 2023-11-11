@@ -1,11 +1,13 @@
-import os
+import zipfile
 import json
+import os
 import re
+import nltk
+from nltk.corpus import words
 import sys
 from sklearn.feature_extraction.text import TfidfVectorizer
 from collections import defaultdict
 from bs4 import BeautifulSoup
-
 
 '''
 Citations: (https://realpython.com/python-zipfile/) -> encoding + reading from zip file
@@ -40,7 +42,7 @@ class JSONFolderReader:
         return jsonList
 
 
-reader = JSONFolderReader("DEV")  # should we be reading from zip or unzipped files/
+reader = JSONFolderReader("test")  # should we be reading from zip or unzipped files/
 jsonList = reader.getJSONData()
 
 """
@@ -113,11 +115,12 @@ class DataStorage:
 
 class Tokenizer:
     def __init__(self):
-        pass
+        self.englishWords = set(nltk.corpus.words.words())
 
     def tokenize(self, text):
-        return re.findall(r'[a-zA-Z0-9]+', text.lower())
-
+        token = re.findall(r'[a-zA-Z0-9]+', text.lower())
+        englishTokens = [word for word in token if word in self.englishWords]
+        return englishTokens
 
 
 
