@@ -1,6 +1,8 @@
 import zipfile
 import json
 import re
+import nltk
+from nltk.corpus import words
 import sys
 from sklearn.feature_extraction.text import TfidfVectorizer
 from collections import defaultdict
@@ -54,7 +56,7 @@ jsonList = reader.getJSONData()
                                             (token, [(document it was found in), (tf_idf)]) 
         - citation: #2
 """
-
+"""
 # create a list of texts for vectorization later
 texts = [json_data['content'] for json_data in jsonList]
 
@@ -78,7 +80,7 @@ for row, col, value in zip(tfidfList.nonzero()[0], tfidfList.nonzero()[1], tfidf
         inv_index[term] = []
     # append a tuple of (document id, tf-idf score) to the "posting list"
     inv_index[term].append((doc_id, tf_idf))
-
+"""
 
 
 
@@ -117,10 +119,12 @@ class DataStorage:
 
 class Tokenizer:
     def __init__(self):
-        pass
+        self.englishWords = set(nltk.corpus.words.words())
 
     def tokenize(self, text):
-        return re.findall(r'[a-zA-Z0-9]+', text.lower())
+        token = re.findall(r'[a-zA-Z0-9]+', text.lower())
+        englishTokens = [word for word in token if word in self.englishWords]
+        return englishTokens
 
 
 
