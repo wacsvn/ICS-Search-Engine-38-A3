@@ -139,7 +139,3 @@ dataStorage.printIndexedFileCount()
 dataStorage.uniqueWordCount()
 # print(f"td-idf type:  {type(tfidfList)}") # debug
 # print(inv_index)  # commenting out to keep things readable lol
-
-
-
-
