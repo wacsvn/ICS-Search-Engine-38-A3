@@ -5,7 +5,9 @@ import sys
 from sklearn.feature_extraction.text import TfidfVectorizer
 from collections import defaultdict
 from bs4 import BeautifulSoup
-
+from nltk.stem import PorterStemmer
+import nltk
+nltk.download('punkt')
 
 '''
 Citations: (https://realpython.com/python-zipfile/) -> encoding + reading from zip file
@@ -54,7 +56,7 @@ jsonList = reader.getJSONData()
                                             (token, [(document it was found in), (tf_idf)]) 
         - citation: #2
 """
-
+"""
 # create a list of texts for vectorization later
 texts = [json_data['content'] for json_data in jsonList]
 
@@ -79,13 +81,13 @@ for row, col, value in zip(tfidfList.nonzero()[0], tfidfList.nonzero()[1], tfidf
     # append a tuple of (document id, tf-idf score) to the "posting list"
     inv_index[term].append((doc_id, tf_idf))
 
-
+"""
 
 
 class DataStorage:
     # Citation -> (https://www.geeksforgeeks.org/understanding-tf-idf-term-frequency-inverse-document-frequency/#)
     def __init__(self):
-        self.invertedIndex = defaultdict(lambda: list())  # key(token), value(list of documents that token appears on)
+        self.invertedIndex = defaultdict(lambda: set())  # key(token), value(list of documents that token appears on)
         self.totalWords = defaultdict(lambda: 0)  # key(url), value(# of tokens for that url)
         self.frequencyWordsInDocument = defaultdict(lambda: defaultdict(lambda: 0))  # key(url), value(dictionary where key is token and value is number of occurences of that token)
         self.indexedFileCount = 0  # initialize counter for indexed files
@@ -93,7 +95,7 @@ class DataStorage:
     def addTokens(self, url, tokens):
         innerDict = self.frequencyWordsInDocument[url]
         for token in tokens:
-            self.invertedIndex[token].append(url)
+            self.invertedIndex[token].add(url)
             innerDict[token] += 1
 
         self.totalWords[url] = len(tokens)
@@ -117,12 +119,11 @@ class DataStorage:
 
 class Tokenizer:
     def __init__(self):
-        pass
+        self.stemmer = PorterStemmer()
 
     def tokenize(self, text):
-        return re.findall(r'[a-zA-Z0-9]+', text.lower())
-
-
+        tokens = re.findall(r'[a-zA-Z0-9]+', text.lower())
+        return [self.stemmer.stem(token) for token in tokens]  # stemming to each token
 
 
 index = 0
