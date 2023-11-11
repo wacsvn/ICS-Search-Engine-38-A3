@@ -116,11 +116,14 @@ class DataStorage:
 class Tokenizer:
     def __init__(self):
         self.englishWords = set(nltk.corpus.words.words())
+        # pass
 
     def tokenize(self, text):
-        token = re.findall(r'[a-zA-Z0-9]+', text.lower())
-        englishTokens = [word for word in token if word in self.englishWords]
+        tokens = re.findall(r'[a-zA-Z0-9]+', text.lower())
+        englishTokens = [word for word in tokens if word in self.englishWords]
+        print(len(englishTokens))
         return englishTokens
+        # return re.findall(r'[a-zA-Z0-9]+', text.lower())
 
 
 
@@ -136,9 +139,6 @@ for file in jsonList:
 dataStorage.indexSize()
 dataStorage.printIndexedFileCount()
 dataStorage.uniqueWordCount()
+
 # print(f"td-idf type:  {type(tfidfList)}") # debug
 # print(inv_index)  # commenting out to keep things readable lol
-
-
-
-
