@@ -2,8 +2,11 @@
 Group Members
 -------------------------
 Adam Ho, adamh7, 93172696
+
 Bryan Barcelo, barceloo, 20059593
+
 Jett Spitzer, jlspitze, 44184334
+
 Varun Ruddaraju , vruddara, 95283007
 
 
