@@ -5,9 +5,9 @@ import sys
 from sklearn.feature_extraction.text import TfidfVectorizer
 from collections import defaultdict
 from bs4 import BeautifulSoup
-from nltk.stem import PorterStemmer
-import nltk
-nltk.download('punkt')
+# from nltk.stem import PorterStemmer
+# # import nltk
+# nltk.download('punkt')
 
 '''
 Citations: (https://realpython.com/python-zipfile/) -> encoding + reading from zip file
@@ -116,14 +116,50 @@ class DataStorage:
     def printIndexedFileCount(self):
         print(f"Total number of indexed files: {self.indexedFileCount}")
 
+    def calcTfidf(self):
+        """
+            TF-IDF CALCULATION:
+                - uses jsonList to fit against vectorized TfIdf's
+                - extracts resulting matrix and stores in inv_index in the format
+                                                    (token, [(document it was found in), (tf_idf)])
+                - citation: #2
+        """
+
+        # create a list of texts for vectorization later
+        texts = [json_data['content'] for json_data in jsonList]
+
+        # begin tf-df calculations
+        tfidf = TfidfVectorizer()
+        tfidfList = tfidf.fit_transform(texts)
+
+        # iterate tfidList matrix to ultimately store in inv_index
+        terms = tfidf.get_feature_names_out()
+
+        for row, col, value in zip(tfidfList.nonzero()[0], tfidfList.nonzero()[1], tfidfList.data):
+            try:
+                # get the document id, term id, and tf-idf score
+                doc_id = row
+                term_id = col
+                tf_idf = value
+                # get the term corresponding to the term id
+                term = terms[term_id]
+                # print(f"added term {term}")
+                # append a tuple of (document id, tf-idf score) to the "posting list"
+                self.invertedIndex[term].add((doc_id, tf_idf))
+            except Exception as e:
+                print(f"Error processing document: {doc_id}, Term: {term}, Error: {e}")
+                continue
+
+
 
 class Tokenizer:
-    def __init__(self):
-        self.stemmer = PorterStemmer()
+    # def __init__(self):
+    #     self.stemmer = PorterStemmer()
 
     def tokenize(self, text):
         tokens = re.findall(r'[a-zA-Z0-9]+', text.lower())
-        return [self.stemmer.stem(token) for token in tokens]  # stemming to each token
+        return tokens
+    # [self.stemmer.stem(token) for token in tokens]  # stemming to each token
 
 
 index = 0
@@ -138,5 +174,8 @@ for file in jsonList:
 dataStorage.indexSize()
 dataStorage.printIndexedFileCount()
 dataStorage.uniqueWordCount()
+dataStorage.calcTfidf()
+print(dataStorage.invertedIndex.keys())
+print("tfidf test complete")
 # print(f"td-idf type:  {type(tfidfList)}") # debug
 # print(inv_index)  # commenting out to keep things readable lol
