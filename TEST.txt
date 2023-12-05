@@ -1,0 +1,41 @@
+﻿TEST QUERIES
+
+
+Less effective queries: 
+* raccoon applet class
+   * Top result was a directory of classes that happened to include the Raccoon class, rather than the class itself
+* cs 175 reference material
+   * Results included lecture slides from CS courses, but not exclusively from CS 175
+* Workflow process
+   * Returned a presentation involving Software Redesign Processes, instead of the desired Workflow Process slides from WISEN
+* ICT @ ICS
+   * Desired page, whose header is exactly the query, is too far down the ranking
+* Geoffrey Clemm Rational
+   * Completely misses the desired presentation slides authored by Clemm, instead suggesting lecture slides
+* Ordered Collections
+   * Doesn’t prioritize pages whose headers include a bolded “Ordered Collections”
+* keryx service model
+   * Suggests pages that reference the Keryx Service Model but doesn’t rank the page itself as the highest 
+* An Internet Notification Service
+   * First result simply has the word “service” matching the query
+* Closest Pair Data Structures: Source Code
+   * Similar to the previous; first result simply has the word “data” mentioned multiple times. 
+* Dependency Diagrams
+   * Desired result (a page on computableplant.ics.uci.edu) is second in rank, behind a page that makes no mention of dependency diagrams
+
+
+The above queries were improved by writing our own vector data structure instead of relying on sklearn’s tfidfvectorizer function, as well as implementing cosine similarity to fix issues with inaccurate ranking. 
+
+
+Effective queries: 
+* Cargo Freight Tracing
+* Bloom's Taxonomy of Educational Objectives
+* CFIM59KO deltapsi
+* datasets for machine learning
+* Aburtsev kernel memory before relocation
+* Wics mentorship mixer
+* ics publications
+* fisch family descendants
+* what is abstraction
+* human-computer interaction notes
+* Irani lab assignments
